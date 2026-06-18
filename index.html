@@ -712,17 +712,6 @@ footer{
 #naHeroAdjust input[type=range]{width:100%;accent-color:var(--gold)}
 .ha-row{display:flex;gap:8px}
 #naHeroAdjust .ha-fit.active{background:var(--gold);color:var(--ink)}
-/* countdown — brown & gold */
-.countdown-section{background:var(--ink);padding:clamp(70px,10vw,110px) 24px;text-align:center;position:relative}
-.cd-inner{max-width:760px;margin:0 auto}
-.cd-grid{display:flex;justify-content:center;align-items:flex-start;gap:clamp(8px,2.5vw,26px);margin-top:44px}
-.cd-unit{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:60px}
-.cd-num{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(38px,9vw,72px);line-height:1;background:linear-gradient(135deg,var(--bronze) 0%,var(--gold) 45%,var(--goldl) 70%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cd-lbl{font-family:'Didact Gothic',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--bronze)}
-.cd-sep{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,6vw,52px);color:rgba(200,168,75,.35);line-height:1;margin-top:clamp(2px,1.2vw,10px)}
-.cd-date{margin-top:42px;font-family:'Didact Gothic',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--goldl)}
-.cd-done{font-family:'EB Garamond',serif;font-style:italic;font-size:26px;color:var(--goldl);margin-top:28px}
-@media(max-width:520px){.cd-sep{display:none}.cd-grid{gap:12px}.cd-unit{min-width:54px}}
 /* closing + ring-exchange ceremony */
 .closing-section{background:var(--cream);padding:clamp(64px,9vw,100px) 24px;text-align:center}
 .closing-inner{max-width:620px;margin:0 auto}
@@ -734,6 +723,11 @@ footer{
 .closing-text{margin-top:38px;font-family:'EB Garamond',serif;font-style:italic;font-size:clamp(16px,2.2vw,20px);line-height:1.9;color:var(--sepia)}
 .closing-names{margin-top:28px;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(24px,5vw,34px);color:var(--bronze)}
 .closing-section .s-rule{margin:0 auto}
+.cer-cd{display:flex;gap:clamp(8px,3.5vw,20px);margin-top:18px;padding-top:18px;border-top:1px solid rgba(200,168,75,.3)}
+.cerc{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:46px}
+.cerc b{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(24px,7vw,38px);line-height:1;background:linear-gradient(135deg,var(--bronze) 0%,var(--gold) 55%,var(--goldl) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cerc span{font-family:'Didact Gothic',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--bronze)}
+.cer-done{font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:var(--bronze);margin-top:14px}
 /* BGM */
 .bgm-fab{position:fixed;bottom:28px;right:28px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--sepia);border:1px solid var(--gold);color:var(--goldl);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .bgm-fab svg{width:22px;height:22px}
@@ -911,26 +905,6 @@ footer{
 
 
 
-<!-- ── COUNTDOWN ── -->
-<section class="countdown-section" id="countdown">
-  <div class="cd-inner reveal">
-    <p class="s-label">Counting down to the day</p>
-    <h2 class="s-title" style="color:#fff">A new beginning<br><em>is almost here</em></h2>
-    <div class="s-rule" style="margin:16px auto"></div>
-    <div class="cd-grid" id="cdGrid">
-      <div class="cd-unit"><span class="cd-num" id="cdD">00</span><span class="cd-lbl">Days</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">Hours</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">Minutes</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">Seconds</span></div>
-    </div>
-    <div class="cd-date">23 August 2026 &nbsp;·&nbsp; 11:00 AM</div>
-    <div class="cd-done" id="cdDone" style="display:none">The day is here ✦</div>
-  </div>
-</section>
-
 <!-- ── WISHES ── -->
 <section class="wishes-section" id="wishes">
   <div class="wishes-inner">
@@ -969,6 +943,13 @@ footer{
       </svg>
       <div class="cer-label">The Ring Exchange</div>
       <div class="cer-time">11:00 AM <span>—</span> 12:25 PM</div>
+      <div class="cer-cd" id="cdGrid">
+        <div class="cerc"><b id="cdD">00</b><span>Days</span></div>
+        <div class="cerc"><b id="cdH">00</b><span>Hours</span></div>
+        <div class="cerc"><b id="cdM">00</b><span>Mins</span></div>
+        <div class="cerc"><b id="cdS">00</b><span>Secs</span></div>
+      </div>
+      <div class="cer-done" id="cdDone" style="display:none">The day is here ✦</div>
     </div>
     <p class="closing-text">With hearts full of love and gratitude, we invite you to witness and bless our Ring Exchange Ceremony. Your presence will mean so much to us as we take this beautiful step together.</p>
     <div class="s-rule" style="margin:32px auto 0;width:60px"></div>
