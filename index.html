@@ -697,6 +697,10 @@ footer{
 .wcl-rbtn.rm{background:transparent;color:var(--bronze);border:1px solid var(--parchment)}
 .wcl-reply-ed{margin-top:12px}
 .wcl-reply-ed textarea{width:100%;box-sizing:border-box;min-height:60px;padding:10px;border:1px solid var(--parchment);font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:var(--sepia);background:var(--ivory);resize:vertical;margin-bottom:8px}
+/* falling leaves — clipped to the hero image only */
+.leaf-fall{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.leaf-fall i{position:absolute;top:-12%;display:block;border-radius:0 100% 0 100%;opacity:.9;box-shadow:inset -1px -1px 2px rgba(40,60,25,.18);will-change:transform,top;animation:leafFall linear infinite}
+@keyframes leafFall{0%{top:-12%;transform:translateX(0) rotate(0deg)}20%{transform:translateX(15px) rotate(80deg)}45%{transform:translateX(-12px) rotate(165deg)}70%{transform:translateX(13px) rotate(255deg)}100%{top:113%;transform:translateX(-4px) rotate(380deg)}}
 /* BGM */
 .bgm-fab{position:fixed;bottom:28px;right:28px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--sepia);border:1px solid var(--gold);color:var(--goldl);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .bgm-fab svg{width:22px;height:22px}
@@ -773,6 +777,26 @@ footer{
   <div class="hero-right">
     <div class="na-hero-photo" id="naHeroPhoto"></div>
     <div class="photo-overlay"></div>
+    <div class="leaf-fall" aria-hidden="true">
+      <i style="left:32.4%;width:10.4px;height:10.4px;background:linear-gradient(135deg,#a7c07f,#6e9249);animation-duration:10.4s;animation-delay:-0.9s"></i>
+      <i style="left:36.4%;width:9.5px;height:9.5px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:9.5s;animation-delay:-0.4s"></i>
+      <i style="left:41.3%;width:11.2px;height:11.2px;background:linear-gradient(135deg,#a7c07f,#6e9249);animation-duration:9.8s;animation-delay:-0.7s"></i>
+      <i style="left:91.1%;width:14.7px;height:14.7px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:10.0s;animation-delay:-0.7s"></i>
+      <i style="left:6.7%;width:11.0px;height:11.0px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:9.8s;animation-delay:-1.6s"></i>
+      <i style="left:15.6%;width:10.1px;height:10.1px;background:linear-gradient(135deg,#86a85f,#4f6b35);animation-duration:8.4s;animation-delay:-9.8s"></i>
+      <i style="left:11.7%;width:14.1px;height:14.1px;background:linear-gradient(135deg,#a7c07f,#6e9249);animation-duration:7.6s;animation-delay:-1.2s"></i>
+      <i style="left:55.1%;width:14.6px;height:14.6px;background:linear-gradient(135deg,#bcd197,#84a85c);animation-duration:9.5s;animation-delay:-6.4s"></i>
+      <i style="left:45.8%;width:17.3px;height:17.3px;background:linear-gradient(135deg,#86a85f,#4f6b35);animation-duration:8.7s;animation-delay:-3.0s"></i>
+      <i style="left:67.7%;width:11.2px;height:11.2px;background:linear-gradient(135deg,#bcd197,#84a85c);animation-duration:9.9s;animation-delay:-6.3s"></i>
+      <i style="left:70.6%;width:11.6px;height:11.6px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:12.4s;animation-delay:-1.4s"></i>
+      <i style="left:17.5%;width:12.1px;height:12.1px;background:linear-gradient(135deg,#a7c07f,#6e9249);animation-duration:12.1s;animation-delay:-5.1s"></i>
+      <i style="left:73.9%;width:14.2px;height:14.2px;background:linear-gradient(135deg,#bcd197,#84a85c);animation-duration:11.8s;animation-delay:-3.8s"></i>
+      <i style="left:57.9%;width:14.2px;height:14.2px;background:linear-gradient(135deg,#bcd197,#84a85c);animation-duration:9.2s;animation-delay:-10.1s"></i>
+      <i style="left:46.6%;width:15.0px;height:15.0px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:6.9s;animation-delay:-8.4s"></i>
+      <i style="left:28.8%;width:12.5px;height:12.5px;background:linear-gradient(135deg,#7d9c55,#566f30);animation-duration:10.5s;animation-delay:-0.3s"></i>
+      <i style="left:35.4%;width:14.5px;height:14.5px;background:linear-gradient(135deg,#bcd197,#84a85c);animation-duration:9.5s;animation-delay:-2.6s"></i>
+      <i style="left:14.2%;width:11.2px;height:11.2px;background:linear-gradient(135deg,#a7c07f,#6e9249);animation-duration:8.8s;animation-delay:-10.5s"></i>
+    </div>
   </div>
 
   <div class="scroll-ind">
