@@ -693,6 +693,15 @@ footer{
 .wcl-rbtn.rm{background:transparent;color:var(--bronze);border:1px solid var(--parchment)}
 .wcl-reply-ed{margin-top:12px}
 .wcl-reply-ed textarea{width:100%;box-sizing:border-box;min-height:60px;padding:10px;border:1px solid var(--parchment);font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:var(--sepia);background:var(--ivory);resize:vertical;margin-bottom:8px}
+/* BGM */
+.bgm-fab{position:fixed;bottom:28px;right:28px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--sepia);border:1px solid var(--gold);color:var(--goldl);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35)}
+.bgm-fab svg{width:22px;height:22px}
+.bgm-fab .bgm-pause{display:none}
+.bgm-fab.playing .bgm-pause{display:block}
+.bgm-fab.playing .bgm-play{display:none}
+.bgm-fab.playing .bgm-note{animation:bgmSpin 5s linear infinite}
+@keyframes bgmSpin{to{transform:rotate(360deg)}}
+#bgmAdmin{position:fixed;bottom:30px;left:20px;z-index:600}
 </style>
 </head>
 <body>
@@ -885,11 +894,18 @@ footer{
   </div>
 </footer>
 
+<!-- BGM -->
+<audio id="bgm" loop preload="auto"></audio>
+<button id="bgmBtn" class="bgm-fab" onclick="toggleBgm()" aria-label="Toggle music">
+  <svg class="bgm-play" viewBox="0 0 24 24" fill="currentColor"><path class="bgm-note" d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+  <svg class="bgm-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+</button>
+<button id="bgmAdmin" class="na-admin-btn" onclick="uploadBgm()" style="display:none">♪ Set music</button>
 
 <script>
 
 // ===== LANDING (tap to open) =====
-function enterSite(){ var op=document.getElementById('opening'); if(op) op.classList.add('gone'); document.body.style.overflow='auto'; }
+function enterSite(){ var op=document.getElementById('opening'); if(op) op.classList.add('gone'); document.body.style.overflow='auto'; playBgm(); }
 document.body.style.overflow='hidden';
 
 // ===== PROGRESS BAR =====
@@ -1008,8 +1024,52 @@ function submitWish(){
   c.addEventListener('mousedown',st);c.addEventListener('mouseup',x);c.addEventListener('mouseleave',x);
 })();
 
+// ===== BGM (background music) =====
+var BGM_PATH='amal-nakshathra/bgm-url';
+var bgmLoaded=false, bgmPlaying=false;
+function bgmEl(){ return document.getElementById('bgm'); }
+function setBgmUI(){ var b=document.getElementById('bgmBtn'); if(!b)return; b.style.display=bgmLoaded?'flex':'none'; b.classList.toggle('playing',bgmPlaying); }
+function loadBgm(){
+  db.ref(BGM_PATH).on('value',function(s){
+    var v=s.val(); var url=urlOf(v);
+    var a=bgmEl();
+    if(url){ if(a.src!==url){a.src=url;} try{a.load();}catch(e){} bgmLoaded=true; } else { bgmLoaded=false; }
+    setBgmUI();
+  });
+}
+function playBgm(){
+  var a=bgmEl(); if(!bgmLoaded||!a.src) return;
+  var p=a.play();
+  if(p&&p.then){ p.then(function(){bgmPlaying=true;setBgmUI();}).catch(function(){bgmPlaying=false;setBgmUI();}); }
+  else { bgmPlaying=true; setBgmUI(); }
+}
+function toggleBgm(){
+  var a=bgmEl();
+  if(!bgmLoaded){ if(adminMode) uploadBgm(); return; }
+  if(bgmPlaying){ a.pause(); bgmPlaying=false; setBgmUI(); } else { playBgm(); }
+}
+// first interaction kicks playback if the tap-to-open gesture was too early
+(function(){ function kick(){ if(bgmLoaded&&!bgmPlaying) playBgm(); if(bgmPlaying){document.removeEventListener('touchend',kick);document.removeEventListener('click',kick);} } document.addEventListener('touchend',kick,{passive:true}); document.addEventListener('click',kick); })();
+function uploadBgm(){
+  if(!adminMode){ return; }
+  var inp=document.createElement('input');inp.type='file';inp.accept='audio/*';inp.style.display='none';
+  inp.onchange=function(){
+    var f=inp.files&&inp.files[0]; if(inp.parentNode)inp.parentNode.removeChild(inp); if(!f) return;
+    if(f.size>40*1024*1024){ showToast('File too large (max 40MB)'); return; }
+    showToast('Uploading music…');
+    var ext=((f.name.split('.').pop()||'mp3').match(/[a-z0-9]+/i)||['mp3'])[0].toLowerCase();
+    var fd=new FormData(); fd.append('file',f,'bgm_'+Date.now()+'.'+ext); fd.append('upload_preset',UPLOAD_PRESET); fd.append('folder',COUPLE_FOLDER+'/bgm');
+    fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/video/upload',{method:'POST',body:fd})
+      .then(function(r){return r.json();})
+      .then(function(d){ if(!d||!d.secure_url){throw new Error(d&&d.error?d.error.message:'upload error');} return db.ref(BGM_PATH).set(d.secure_url).then(function(){return d.secure_url;}); })
+      .then(function(url){ var a=bgmEl(); a.src=url; try{a.load();}catch(e){} bgmLoaded=true; setBgmUI(); playBgm(); showToast('Music saved ✦'); })
+      .catch(function(e){ showToast('Upload failed — try again'); console.warn(e); });
+  };
+  document.body.appendChild(inp); inp.click();
+}
+
 // ===== INIT =====
-loadLanding(); loadHero(); loadWishes();
+loadLanding(); loadHero(); loadWishes(); loadBgm();
 
 </script>
 </body>
