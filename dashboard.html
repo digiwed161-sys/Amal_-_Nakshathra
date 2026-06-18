@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Nakshathra &amp; Amal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Didact+Gothic&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ivory:#f9f5ee;--cream:#f2ead8;--parchment:#e8dcc8;--ink:#1a1410;--sepia:#3d2b1a;--bronze:#8b6914;--gold:#c8a84b;--goldl:#e8d48a}
+body{background:var(--ivory);color:var(--ink);font-family:'EB Garamond',serif;min-height:100vh}
+
+/* LOGIN */
+#login{position:fixed;inset:0;z-index:50;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;transition:opacity .5s ease,visibility .5s ease}
+#login.gone{opacity:0;visibility:hidden;pointer-events:none}
+.login-mono{font-family:'Playfair Display',serif;font-style:italic;font-size:34px;color:var(--goldl);margin-bottom:6px}
+.login-sub{font-family:'Didact Gothic',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(232,212,138,.6);margin-bottom:34px}
+#pin{width:220px;max-width:80vw;text-align:center;padding:14px;background:transparent;border:1px solid rgba(200,168,75,.4);color:var(--goldl);font-family:'Didact Gothic',sans-serif;font-size:16px;letter-spacing:6px;outline:none}
+#pin:focus{border-color:var(--gold)}
+.login-btn{margin-top:18px;padding:13px 44px;background:var(--gold);color:var(--ink);border:none;font-family:'Didact Gothic',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.login-btn:hover{background:var(--goldl)}
+.login-err{margin-top:16px;color:#e08a7a;font-size:13px;font-style:italic;min-height:18px}
+
+/* DASHBOARD */
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.dash-head{text-align:center;margin-bottom:40px;border-bottom:1px solid var(--parchment);padding-bottom:28px}
+.dash-title{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(28px,6vw,40px);color:var(--sepia)}
+.dash-eyebrow{font-family:'Didact Gothic',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--bronze);margin-bottom:10px}
+.cards{display:grid;gap:24px;grid-template-columns:1fr 1fr}
+@media(max-width:620px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--parchment);padding:24px}
+.card-label{font-family:'Didact Gothic',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--bronze);margin-bottom:6px}
+.card-title{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:var(--sepia);margin-bottom:16px}
+.preview{width:100%;aspect-ratio:3/4;background:#14100b center/cover no-repeat;border:1px solid var(--parchment);display:flex;align-items:center;justify-content:center;color:rgba(200,168,75,.35);font-size:40px;margin-bottom:16px}
+.preview.hero{aspect-ratio:4/3}
+.btn{display:block;width:100%;padding:13px;background:var(--sepia);color:var(--ivory);border:none;font-family:'Didact Gothic',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background .25s}
+.btn:hover{background:var(--bronze)}
+.btn:disabled{opacity:.6;cursor:default}
+.hint{margin-top:26px;text-align:center;font-style:italic;color:#9a8e7c;font-size:14px;line-height:1.7}
+.hint a{color:var(--bronze)}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--goldl);padding:12px 28px;font-family:'Didact Gothic',sans-serif;font-size:10px;letter-spacing:3px;opacity:0;transition:all .35s ease;z-index:99;pointer-events:none;border:1px solid rgba(200,168,75,.3);white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-mono">Nakshathra &amp; Amal</div>
+  <div class="login-sub">Admin Dashboard</div>
+  <input id="pin" type="password" inputmode="numeric" placeholder="PIN" autocomplete="off"/>
+  <button class="login-btn" onclick="doLogin()">Enter</button>
+  <div class="login-err" id="loginErr"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="wrap">
+  <div class="dash-head">
+    <div class="dash-eyebrow">Engagement · 23 August 2026</div>
+    <div class="dash-title">Manage your invitation</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Landing Screen</div>
+      <div class="card-title">Landing image</div>
+      <div class="preview" id="landingPreview">✦</div>
+      <button class="btn" id="landingBtn" onclick="uploadImage('landing')">Upload / change</button>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Hero Section</div>
+      <div class="card-title">Hero photo</div>
+      <div class="preview hero" id="heroPreview">✦</div>
+      <button class="btn" id="heroBtn" onclick="uploadImage('hero')">Upload / change</button>
+    </div>
+  </div>
+
+  <p class="hint">
+    Images upload to Cloudinary and save instantly for every guest.<br>
+    View the invitation: <a href="index.html">open invitation &#8599;</a>
+  </p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+// ===== CONFIG (shared with index.html) =====
+var firebaseConfig={apiKey:"AIzaSyB41fvxvl1KeHOro6WKJ72o22izuCpJ-b4",authDomain:"yaseen-jumana-wedding.firebaseapp.com",databaseURL:"https://yaseen-jumana-wedding-default-rtdb.firebaseio.com",projectId:"yaseen-jumana-wedding",storageBucket:"yaseen-jumana-wedding.firebasestorage.app",messagingSenderId:"355557621111",appId:"1:355557621111:web:d0b78c34bfe5a53b69f572"};
+if(!firebase.apps.length){firebase.initializeApp(firebaseConfig);}
+var db=firebase.database();
+var MEDIA_PATH='amal-nakshathra/media';
+var ADMIN_PIN='2026NA';
+var CLOUD_NAME='dormnrhdf';
+var UPLOAD_PRESET='ml_default';
+var COUPLE_FOLDER='digiwed-invitations/amal-nakshathra';
+
+// default landing already baked into index.html (the A·N wax seal)
+var DEFAULTS={ landing:'https://res.cloudinary.com/dormnrhdf/image/upload/f_auto,q_auto/1781799551009_cyqfta', hero:null };
+
+function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2600);}
+
+// ===== LOGIN =====
+function doLogin(){
+  var pin=document.getElementById('pin').value.trim();
+  if(pin!==ADMIN_PIN){ document.getElementById('loginErr').textContent='Incorrect PIN'; return; }
+  document.getElementById('login').classList.add('gone');
+  loadCurrent();
+}
+document.getElementById('pin').addEventListener('keydown',function(e){ if(e.key==='Enter') doLogin(); });
+
+// ===== LOAD CURRENT IMAGES =====
+function urlOf(v){ return v&&v.url?v.url:(typeof v==='string'?v:null); }
+function setPreview(which,url){
+  var el=document.getElementById(which+'Preview');
+  if(url){ el.style.backgroundImage="url('"+url+"')"; el.textContent=''; }
+  else { el.style.backgroundImage='none'; el.textContent='✦'; }
+}
+function loadCurrent(){
+  ['landing','hero'].forEach(function(which){
+    db.ref(MEDIA_PATH+'/'+which).on('value',function(s){
+      setPreview(which, urlOf(s.val()) || DEFAULTS[which]);
+    });
+  });
+}
+
+// ===== UPLOAD =====
+function uploadImage(which){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.style.display='none';
+  inp.onchange=function(){
+    var file=inp.files&&inp.files[0]; if(inp.parentNode)inp.parentNode.removeChild(inp);
+    if(!file) return;
+    var btn=document.getElementById(which+'Btn');
+    btn.disabled=true; var lbl=btn.textContent; btn.textContent='Uploading…';
+    var fd=new FormData();fd.append('file',file);fd.append('upload_preset',UPLOAD_PRESET);fd.append('folder',COUPLE_FOLDER);
+    fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(!d||!d.secure_url){ throw new Error(d&&d.error?d.error.message:'upload error'); }
+        return db.ref(MEDIA_PATH+'/'+which).set({url:d.secure_url,public_id:d.public_id,ts:Date.now()}).then(function(){ return d.secure_url; });
+      })
+      .then(function(url){ setPreview(which,url); btn.disabled=false; btn.textContent=lbl; showToast((which==='landing'?'Landing':'Hero')+' image updated ✦'); })
+      .catch(function(e){ btn.disabled=false; btn.textContent=lbl; showToast('Upload failed — try again'); console.warn(e); });
+  };
+  document.body.appendChild(inp); inp.click();
+}
+</script>
+</body>
+</html>
