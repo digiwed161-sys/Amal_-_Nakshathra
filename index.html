@@ -678,8 +678,12 @@ footer{
 .na-hero-photo{position:absolute;inset:0;background:#14100b center/cover no-repeat}
 .na-hero-photo:not(.has-img)::after{content:'✦';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(200,168,75,.25);font-size:60px}
 .na-admin-btn{font-family:'Didact Gothic',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:rgba(200,168,75,.95);color:#1a1410;border:none;padding:10px 18px;border-radius:2px}
-.na-hero-admin{position:absolute;bottom:20px;right:20px;z-index:5}
-#naLandingAdmin{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);z-index:3}
+/* admin button + toolbar */
+#naAdminBtn{display:block;margin:18px auto 0;padding:10px 30px;background:transparent;border:1px solid rgba(200,168,75,.3);border-radius:4px;font-family:'Didact Gothic',sans-serif;letter-spacing:4px;font-size:10px;text-transform:uppercase;color:rgba(200,168,75,.55);cursor:pointer;transition:color .25s,border-color .25s}
+#naAdminBtn:hover{color:var(--goldl);border-color:rgba(200,168,75,.6)}
+#naAdminBar{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:700;display:none;gap:8px;background:rgba(26,20,16,.97);border:1px solid rgba(200,168,75,.3);border-bottom:none;border-radius:10px 10px 0 0;padding:12px 14px;flex-wrap:wrap;justify-content:center;max-width:96vw;box-shadow:0 -6px 26px rgba(0,0,0,.4)}
+#naAdminBar.show{display:flex}
+#naAdminBar .na-admin-btn{margin:0}
 .wcl-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
 .wcl-like{background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:15px;color:rgba(139,105,20,.45);padding:0;transition:color .2s,transform .15s;-webkit-tap-highlight-color:transparent}
 .wcl-like:active{transform:scale(1.25)}
@@ -701,7 +705,6 @@ footer{
 .bgm-fab.playing .bgm-play{display:none}
 .bgm-fab.playing .bgm-note{animation:bgmSpin 5s linear infinite}
 @keyframes bgmSpin{to{transform:rotate(360deg)}}
-#bgmAdmin{position:fixed;bottom:30px;left:20px;z-index:600}
 </style>
 </head>
 <body>
@@ -719,7 +722,6 @@ footer{
     <div class="open-line"><div class="open-text t3">23 · August · 2026</div></div>
   </div>
   <div id="naLandingHint">Tap to open</div>
-  <button id="naLandingAdmin" class="na-admin-btn" onclick="event.stopPropagation();uploadLanding()" style="display:none">+ ADD LANDING IMAGE</button>
 </div>
 
 <!-- ── NAV ── -->
@@ -771,7 +773,6 @@ footer{
   <div class="hero-right">
     <div class="na-hero-photo" id="naHeroPhoto"></div>
     <div class="photo-overlay"></div>
-    <button class="na-admin-btn na-hero-admin" onclick="uploadHero()" style="display:none">+ ADD PHOTO</button>
   </div>
 
   <div class="scroll-ind">
@@ -892,7 +893,16 @@ footer{
     Sreelekshmi Residency<br>
     Choonad, Vallikunnam
   </div>
+  <button id="naAdminBtn" onclick="enableAdmin()" style="grid-column:1/-1">Admin</button>
 </footer>
+
+<!-- ADMIN TOOLBAR -->
+<div id="naAdminBar">
+  <button class="na-admin-btn" onclick="uploadLanding()">Landing image</button>
+  <button class="na-admin-btn" onclick="uploadHero()">Hero photo</button>
+  <button class="na-admin-btn" onclick="uploadBgm()">Music</button>
+  <button class="na-admin-btn" onclick="exitAdmin()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Done</button>
+</div>
 
 <!-- BGM -->
 <audio id="bgm" loop preload="auto"></audio>
@@ -900,7 +910,6 @@ footer{
   <svg class="bgm-play" viewBox="0 0 24 24" fill="currentColor"><path class="bgm-note" d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
   <svg class="bgm-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
 </button>
-<button id="bgmAdmin" class="na-admin-btn" onclick="uploadBgm()" style="display:none">♪ Set music</button>
 
 <script>
 
@@ -957,7 +966,8 @@ function loadHero(){ db.ref(MEDIA_PATH+'/hero').on('value',function(s){var u=url
 function uploadHero(){ if(!adminMode)return; pickImage(function(f){ showToast('Uploading…'); cloudinaryUpload(f,function(err,url){ if(err){showToast('Upload failed');return;} db.ref(MEDIA_PATH+'/hero').set({url:url,ts:Date.now()}); applyHero(url); showToast('Hero photo updated ✦'); }); }); }
 
 // ===== ADMIN MODE =====
-function enableAdmin(){ if(adminMode)return; var pin=prompt('Enter admin PIN:'); if(pin===null)return; if(pin!==ADMIN_PIN){alert('Incorrect PIN');return;} adminMode=true; document.querySelectorAll('.na-admin-btn').forEach(function(b){b.style.display='';}); renderWishes(); showToast('Admin mode on'); }
+function enableAdmin(){ if(adminMode)return; var pin=prompt('Enter admin PIN:'); if(pin===null)return; if(pin!==ADMIN_PIN){alert('Incorrect PIN');return;} adminMode=true; var bar=document.getElementById('naAdminBar'); if(bar) bar.classList.add('show'); renderWishes(); showToast('Admin mode on ✦'); }
+function exitAdmin(){ adminMode=false; var bar=document.getElementById('naAdminBar'); if(bar) bar.classList.remove('show'); renderWishes(); showToast('Admin mode off'); }
 
 // ===== WISHES (like + couple reply) =====
 var _all=[],_shown=6,WPAGE=6,recentTs=0;
