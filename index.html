@@ -671,8 +671,8 @@ footer{
 <style>
 /* ── Engagement overrides ── */
 #opening{cursor:pointer}
-#naLandingImg{position:absolute;inset:0;background:#0d0d0d center/cover no-repeat;display:none;z-index:1}
-#naLandingFallback{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#naLandingImg{position:absolute;inset:0;background:#1a0f0a url('landing.png') center/cover no-repeat;display:block;z-index:1}
+#naLandingFallback{position:relative;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center}
 #naLandingHint{position:absolute;bottom:48px;left:0;right:0;z-index:2;text-align:center;font-family:'Didact Gothic',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--goldl);animation:naHintPulse 2.4s ease-in-out infinite;pointer-events:none}
 @keyframes naHintPulse{0%,100%{opacity:.4}50%{opacity:.95}}
 .na-hero-photo{position:absolute;inset:0;background:#14100b center/cover no-repeat}
@@ -709,7 +709,7 @@ footer{
     <div class="open-divider"></div>
     <div class="open-line"><div class="open-text t3">23 · August · 2026</div></div>
   </div>
-  <div id="naLandingHint">Tap to open &#8599;</div>
+  <div id="naLandingHint">Tap to open</div>
   <button id="naLandingAdmin" class="na-admin-btn" onclick="event.stopPropagation();uploadLanding()" style="display:none">+ ADD LANDING IMAGE</button>
 </div>
 
