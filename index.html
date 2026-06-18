@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Nakshathra &amp; Amal · Engagement</title>
+<title>Amal &amp; Nakshathra · Engagement</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Didact+Gothic&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -721,7 +721,7 @@ footer{
   <div id="naLandingImg"></div>
   <div id="naLandingFallback">
     <div class="open-line"><div class="open-text t1">— An Engagement Invitation —</div></div>
-    <div class="open-line"><div class="open-text t2">N &amp; A</div></div>
+    <div class="open-line"><div class="open-text t2">A &amp; N</div></div>
     <div class="open-divider"></div>
     <div class="open-line"><div class="open-text t3">23 · August · 2026</div></div>
   </div>
@@ -730,7 +730,7 @@ footer{
 
 <!-- ── NAV ── -->
 <nav>
-  <div class="nav-logo">N &amp; A</div>
+  <div class="nav-logo">A &amp; N</div>
   <div class="nav-links">
     <a href="#details">Details</a>
     <a href="#wishes">Wishes</a>
@@ -745,9 +745,9 @@ footer{
     <div class="hl-bismillah">
       &#x2609; With joyful hearts &#x2609;
     </div>
-    <div class="hl-name-g">Nakshathra</div>
+    <div class="hl-name-g">Amal</div>
     <span class="hl-amp">— &amp; —</span>
-    <div class="hl-name-b">Amal</div>
+    <div class="hl-name-b">Nakshathra</div>
     <div class="hl-tagline">Together is the most beautiful place to be</div>
     <div class="hl-date-strip">
       <div class="ds-item">
@@ -808,14 +808,14 @@ footer{
 <!-- ── EDITORIAL BAND ── -->
 <div class="editorial-band">
   <div class="marquee-track">
-    <span class="marquee-item">Nakshathra <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Amal <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Nakshathra <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">23 August 2026 <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Sreelekshmi Residency <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Choonad, Vallikunnam <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Sunday <span class="marquee-sep">✦</span></span>
-    <span class="marquee-item">Nakshathra <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Amal <span class="marquee-sep">✦</span></span>
+    <span class="marquee-item">Nakshathra <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">23 August 2026 <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Sreelekshmi Residency <span class="marquee-sep">✦</span></span>
     <span class="marquee-item">Choonad, Vallikunnam <span class="marquee-sep">✦</span></span>
@@ -867,7 +867,7 @@ footer{
         <a class="udc-btn udc-btn-primary" href="https://www.google.com/maps/search/Sreelekshmi+Residency+Choonad+Vallikunnam" target="_blank">
           📍 &nbsp; GET DIRECTIONS
         </a>
-        <a class="udc-btn udc-btn-secondary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nakshathra+%26+Amal+Engagement&dates=20260823T053000Z/20260823T065500Z&location=Sreelekshmi+Residency%2C+Choonad%2C+Vallikunnam" target="_blank">
+        <a class="udc-btn udc-btn-secondary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Amal+%26+Nakshathra+Engagement&dates=20260823T053000Z/20260823T065500Z&location=Sreelekshmi+Residency%2C+Choonad%2C+Vallikunnam" target="_blank">
           📅 &nbsp; ADD TO CALENDAR
         </a>
       </div>
@@ -891,7 +891,7 @@ footer{
         <input type="text" id="wisherName" placeholder="Your Name" maxlength="40"/>
       </div>
       <div class="wfl-field">
-        <textarea id="wisherMsg" placeholder="Write your wishes for Nakshathra & Amal…"></textarea>
+        <textarea id="wisherMsg" placeholder="Write your wishes for Amal & Nakshathra…"></textarea>
       </div>
       <button class="wfl-submit" onclick="submitWish()">Send Wishes</button>
     </div>
@@ -908,7 +908,7 @@ footer{
 <!-- ── FOOTER ── -->
 <footer>
   <div class="ft-left"></div>
-  <div class="ft-center" id="naAdminTrigger">Nakshathra &amp; Amal</div>
+  <div class="ft-center" id="naAdminTrigger">Amal &amp; Nakshathra</div>
   <div class="ft-right">
     Sreelekshmi Residency<br>
     Choonad, Vallikunnam
@@ -934,7 +934,7 @@ footer{
 <script>
 
 // ===== LANDING (tap to open) =====
-function enterSite(){ var op=document.getElementById('opening'); if(op) op.classList.add('gone'); document.body.style.overflow='auto'; playBgm(); }
+function enterSite(){ var op=document.getElementById('opening'); if(op) op.classList.add('gone'); document.body.style.overflow='auto'; entered=true; playBgm(); }
 document.body.style.overflow='hidden';
 
 // ===== PROGRESS BAR =====
@@ -953,7 +953,7 @@ if(!firebase.apps.length){firebase.initializeApp(firebaseConfig);}
 var db=firebase.database();
 var WISHES_PATH='amal-nakshathra/wishes';
 var MEDIA_PATH='amal-nakshathra/media';
-var COUPLE='Nakshathra & Amal';
+var COUPLE='Amal & Nakshathra';
 var ADMIN_PIN='2026NA';
 var CLOUD_NAME='dormnrhdf';
 var UPLOAD_PRESET='ml_default';
@@ -1056,7 +1056,7 @@ function submitWish(){
 
 // ===== BGM (background music) =====
 var BGM_PATH='amal-nakshathra/bgm-url';
-var bgmLoaded=false, bgmPlaying=false;
+var bgmLoaded=false, bgmPlaying=false, entered=false;
 function bgmEl(){ return document.getElementById('bgm'); }
 function setBgmUI(){ var b=document.getElementById('bgmBtn'); if(!b)return; b.style.display=bgmLoaded?'flex':'none'; b.classList.toggle('playing',bgmPlaying); }
 function loadBgm(){
@@ -1065,6 +1065,7 @@ function loadBgm(){
     var a=bgmEl();
     if(url){ if(a.src!==url){a.src=url;} try{a.load();}catch(e){} bgmLoaded=true; } else { bgmLoaded=false; }
     setBgmUI();
+    if(bgmLoaded && entered && !bgmPlaying) playBgm();
   });
 }
 function playBgm(){
