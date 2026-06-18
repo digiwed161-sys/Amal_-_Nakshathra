@@ -701,6 +701,13 @@ footer{
 .leaf-fall{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .leaf-fall i{position:absolute;top:-12%;display:block;border-radius:60% 60% 55% 55% / 78% 78% 45% 45%;opacity:.85;box-shadow:inset -2px -3px 4px rgba(150,40,70,.22);will-change:transform,top;animation:leafFall linear infinite}
 @keyframes leafFall{0%{top:-12%;transform:translateX(0) rotate(0deg)}20%{transform:translateX(15px) rotate(80deg)}45%{transform:translateX(-12px) rotate(165deg)}70%{transform:translateX(13px) rotate(255deg)}100%{top:113%;transform:translateX(-4px) rotate(380deg)}}
+/* hero image adjust panel */
+#naHeroAdjust{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:701;display:none;flex-direction:column;gap:10px;width:min(320px,92vw);background:rgba(26,20,16,.97);border:1px solid rgba(200,168,75,.3);border-radius:10px;padding:16px 18px;box-shadow:0 -6px 26px rgba(0,0,0,.45)}
+#naHeroAdjust.show{display:flex}
+#naHeroAdjust label{font-family:'Didact Gothic',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--goldl);display:flex;flex-direction:column;gap:6px}
+#naHeroAdjust input[type=range]{width:100%;accent-color:var(--gold)}
+.ha-row{display:flex;gap:8px}
+#naHeroAdjust .ha-fit.active{background:var(--gold);color:var(--ink)}
 /* BGM */
 .bgm-fab{position:fixed;bottom:28px;right:28px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--sepia);border:1px solid var(--gold);color:var(--goldl);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .bgm-fab svg{width:22px;height:22px}
@@ -921,8 +928,24 @@ footer{
   <button class="na-admin-btn" onclick="uploadLanding()">Landing image</button>
   <button class="na-admin-btn" onclick="removeLanding()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Remove landing</button>
   <button class="na-admin-btn" onclick="uploadHero()">Hero photo</button>
+  <button class="na-admin-btn" onclick="openHeroAdjust()">Adjust hero</button>
   <button class="na-admin-btn" onclick="uploadBgm()">Music</button>
   <button class="na-admin-btn" onclick="exitAdmin()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Done</button>
+</div>
+
+<!-- HERO ADJUST PANEL -->
+<div id="naHeroAdjust" aria-hidden="true">
+  <div class="ha-row">
+    <button class="na-admin-btn ha-fit" data-fit="cover" onclick="setHeroFit('cover')">Cover</button>
+    <button class="na-admin-btn ha-fit" data-fit="contain" onclick="setHeroFit('contain')">Contain</button>
+  </div>
+  <label>Horizontal<input type="range" id="haX" min="0" max="100" value="50" oninput="haInput()"></label>
+  <label>Vertical<input type="range" id="haY" min="0" max="100" value="50" oninput="haInput()"></label>
+  <label>Zoom<input type="range" id="haZoom" min="100" max="220" value="100" oninput="haInput()"></label>
+  <div class="ha-row">
+    <button class="na-admin-btn" onclick="saveHeroAdjust()">Save framing</button>
+    <button class="na-admin-btn" onclick="closeHeroAdjust()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Close</button>
+  </div>
 </div>
 
 <!-- BGM -->
@@ -986,6 +1009,15 @@ function removeLanding(){ if(!adminMode)return; if(!confirm('Remove the uploaded
 function applyHero(url){ var h=document.getElementById('naHeroPhoto'); if(url&&h){h.style.backgroundImage="url('"+url+"')";h.classList.add('has-img');} }
 function loadHero(){ db.ref(MEDIA_PATH+'/hero').on('value',function(s){var u=urlOf(s.val());if(u)applyHero(u);}); }
 function uploadHero(){ if(!adminMode)return; pickImage(function(f){ showToast('Uploading…'); cloudinaryUpload(f,function(err,url){ if(err){showToast('Upload failed');return;} db.ref(MEDIA_PATH+'/hero').set({url:url,ts:Date.now()}); applyHero(url); showToast('Hero photo updated ✦'); }); }); }
+var heroAdj={fit:'cover',x:50,y:50,zoom:100};
+function applyHeroAdjust(){ var h=document.getElementById('naHeroPhoto'); if(!h)return; h.style.backgroundSize=heroAdj.fit; h.style.backgroundPosition=heroAdj.x+'% '+heroAdj.y+'%'; h.style.transformOrigin=heroAdj.x+'% '+heroAdj.y+'%'; h.style.transform='scale('+(heroAdj.zoom/100)+')'; }
+function syncAdjustUI(){ var x=document.getElementById('haX'),y=document.getElementById('haY'),z=document.getElementById('haZoom'); if(x)x.value=heroAdj.x; if(y)y.value=heroAdj.y; if(z)z.value=heroAdj.zoom; document.querySelectorAll('#naHeroAdjust .ha-fit').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-fit')===heroAdj.fit); }); }
+function loadHeroAdjust(){ db.ref(MEDIA_PATH+'/heroAdjust').on('value',function(s){ var v=s.val()||{}; heroAdj={fit:(v.fit==='contain'?'contain':'cover'),x:(v.x==null?50:+v.x),y:(v.y==null?50:+v.y),zoom:(v.zoom==null?100:+v.zoom)}; applyHeroAdjust(); syncAdjustUI(); }); }
+function openHeroAdjust(){ if(!adminMode)return; var p=document.getElementById('naHeroAdjust'); if(p)p.classList.add('show'); syncAdjustUI(); try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);} }
+function closeHeroAdjust(){ var p=document.getElementById('naHeroAdjust'); if(p)p.classList.remove('show'); }
+function haInput(){ heroAdj.x=+document.getElementById('haX').value; heroAdj.y=+document.getElementById('haY').value; heroAdj.zoom=+document.getElementById('haZoom').value; applyHeroAdjust(); }
+function setHeroFit(f){ heroAdj.fit=(f==='contain'?'contain':'cover'); applyHeroAdjust(); syncAdjustUI(); }
+function saveHeroAdjust(){ if(!adminMode)return; db.ref(MEDIA_PATH+'/heroAdjust').set(heroAdj,function(err){ showToast(err?'Could not save':'Hero framing saved ✦'); }); }
 
 // ===== ADMIN MODE =====
 function enableAdmin(){ if(adminMode)return; var pin=prompt('Enter admin PIN:'); if(pin===null)return; if(pin!==ADMIN_PIN){alert('Incorrect PIN');return;} adminMode=true; var bar=document.getElementById('naAdminBar'); if(bar) bar.classList.add('show'); renderWishes(); showToast('Admin mode on ✦'); }
@@ -1102,7 +1134,7 @@ function uploadBgm(){
 }
 
 // ===== INIT =====
-loadLanding(); loadHero(); loadWishes(); loadBgm();
+loadLanding(); loadHero(); loadHeroAdjust(); loadWishes(); loadBgm();
 
 </script>
 </body>
