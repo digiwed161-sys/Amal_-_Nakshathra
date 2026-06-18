@@ -919,6 +919,7 @@ footer{
 <!-- ADMIN TOOLBAR -->
 <div id="naAdminBar">
   <button class="na-admin-btn" onclick="uploadLanding()">Landing image</button>
+  <button class="na-admin-btn" onclick="removeLanding()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Remove landing</button>
   <button class="na-admin-btn" onclick="uploadHero()">Hero photo</button>
   <button class="na-admin-btn" onclick="uploadBgm()">Music</button>
   <button class="na-admin-btn" onclick="exitAdmin()" style="background:transparent;color:var(--goldl);border:1px solid rgba(200,168,75,.45)">Done</button>
@@ -977,8 +978,9 @@ function pickImage(onPick){
 // ===== LANDING IMAGE =====
 function urlOf(v){ return v&&v.url?v.url:(typeof v==='string'?v:null); }
 function applyLanding(url){ var img=document.getElementById('naLandingImg'),fb=document.getElementById('naLandingFallback'); if(url&&img){img.style.backgroundImage="url('"+url+"')";img.style.display='block';if(fb)fb.style.display='none';} }
-function loadLanding(){ db.ref(MEDIA_PATH+'/landing').on('value',function(s){var u=urlOf(s.val());if(u)applyLanding(u);}); }
+function loadLanding(){ db.ref(MEDIA_PATH+'/landing').on('value',function(s){var u=urlOf(s.val());var img=document.getElementById('naLandingImg');if(u){applyLanding(u);}else if(img){img.style.backgroundImage='';}}); }
 function uploadLanding(){ if(!adminMode)return; pickImage(function(f){ showToast('Uploading…'); cloudinaryUpload(f,function(err,url){ if(err){showToast('Upload failed');return;} db.ref(MEDIA_PATH+'/landing').set({url:url,ts:Date.now()}); applyLanding(url); showToast('Landing image updated ✦'); }); }); }
+function removeLanding(){ if(!adminMode)return; if(!confirm('Remove the uploaded landing image and revert to the default?'))return; db.ref(MEDIA_PATH+'/landing').remove(function(err){ if(err){showToast('Could not remove');return;} var img=document.getElementById('naLandingImg'); if(img) img.style.backgroundImage=''; showToast('Landing reset to default ✦'); }); }
 
 // ===== HERO IMAGE =====
 function applyHero(url){ var h=document.getElementById('naHeroPhoto'); if(url&&h){h.style.backgroundImage="url('"+url+"')";h.classList.add('has-img');} }
