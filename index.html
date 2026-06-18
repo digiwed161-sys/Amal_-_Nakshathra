@@ -575,6 +575,9 @@ footer{
   display:flex;align-items:center;justify-content:center;
   font-size:22px;flex-shrink:0;
 }
+.cal-sticker{display:inline-flex;flex-direction:column;width:36px;border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.cal-sticker b{background:#c0392b;color:#fff;font-family:'Didact Gothic',sans-serif;font-size:8.5px;letter-spacing:1px;text-align:center;padding:3px 0;font-weight:700}
+.cal-sticker i{color:var(--ink);font-family:'Playfair Display',serif;font-weight:700;font-size:17px;text-align:center;padding:3px 0 4px;font-style:normal;line-height:1}
 .udc-text{display:flex;flex-direction:column;gap:4px}
 .udc-label{
   font-family:'Didact Gothic',sans-serif;
@@ -857,7 +860,7 @@ footer{
 
         <!-- ROW 1: DATE & TIME -->
         <div class="udc-row">
-          <div class="udc-icon-box">📅</div>
+          <div class="udc-icon-box"><span class="cal-sticker"><b>AUG</b><i>23</i></span></div>
           <div class="udc-text">
             <span class="udc-label">DATE &amp; TIME</span>
             <span class="udc-val-main">Sunday, 23 August 2026</span>
