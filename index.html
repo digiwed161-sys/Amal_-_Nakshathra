@@ -734,6 +734,11 @@ footer{
 .cerc b{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(24px,7vw,38px);line-height:1;background:linear-gradient(135deg,var(--bronze) 0%,var(--gold) 55%,var(--goldl) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .cerc span{font-family:'Didact Gothic',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--bronze)}
 .cer-done{font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:var(--bronze);margin-top:14px}
+/* scroll-down cue (responsive, persists until bottom) */
+.scroll-down{position:fixed;left:50%;bottom:clamp(16px,4vh,28px);transform:translateX(-50%);z-index:550;width:clamp(40px,11vw,48px);height:clamp(40px,11vw,48px);border-radius:50%;background:rgba(26,20,16,.82);border:1px solid rgba(200,168,75,.5);color:var(--goldl);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.scroll-down.show{opacity:1;visibility:visible}
+.scroll-down svg{width:54%;height:54%;animation:sdBounce 1.6s ease-in-out infinite}
+@keyframes sdBounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 /* BGM */
 .bgm-fab{position:fixed;bottom:28px;right:28px;z-index:600;width:50px;height:50px;border-radius:50%;background:var(--sepia);border:1px solid var(--gold);color:var(--goldl);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.35)}
 .bgm-fab svg{width:22px;height:22px}
@@ -1000,6 +1005,11 @@ footer{
   </div>
 </div>
 
+<!-- SCROLL-DOWN CUE -->
+<button id="scrollDown" class="scroll-down" aria-label="Scroll down" onclick="naScrollDown()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
+</button>
+
 <!-- BGM -->
 <audio id="bgm" loop preload="auto"></audio>
 <button id="bgmBtn" class="bgm-fab" onclick="toggleBgm()" aria-label="Toggle music">
@@ -1187,6 +1197,23 @@ function uploadBgm(){
 
 // ===== INIT =====
 loadLanding(); loadHero(); loadHeroAdjust(); loadWishes(); loadBgm();
+
+// ===== SCROLL-DOWN CUE =====
+function naScrollDown(){ window.scrollBy({top:Math.round(window.innerHeight*0.85),left:0,behavior:'smooth'}); }
+(function(){
+  var btn=document.getElementById('scrollDown'); if(!btn) return;
+  function upd(){
+    var op=document.getElementById('opening');
+    var opened=!op||op.classList.contains('gone');
+    var de=document.documentElement;
+    var atBottom=(window.innerHeight+window.scrollY)>=(de.scrollHeight-80);
+    var scrollable=de.scrollHeight>window.innerHeight+60;
+    btn.classList.toggle('show', opened&&scrollable&&!atBottom);
+  }
+  window.addEventListener('scroll',upd,{passive:true});
+  window.addEventListener('resize',upd);
+  setInterval(upd,700); upd();
+})();
 // ===== COUNTDOWN =====
 (function(){
   var target=new Date('2026-08-23T11:00:00+05:30').getTime();
